@@ -1,0 +1,57 @@
+# ==================================================
+# ExpBank unified pipeline configuration (simplified)
+# ==================================================
+
+# --------------------------------------------------
+# Input configuration
+# --------------------------------------------------
+input:
+  # Raw trajectory directory (contains CVE-* subdirectories)
+  raw_traj_dir: "./raw_traj"
+  
+  # Evaluation summary file (optional, used to label success/failure)
+  # If omitted, default to evaluation/summary.json beside raw_traj_dir
+  summary_path: null
+  
+  # CVE vulnerability info file (optional)
+  # If omitted, default to datasets/input.json beside raw_traj_dir
+  vulnerability_info: "/home/haichuan/projects/vulagent-main/expbank/datasets/input.json"
+  
+  # Relative vulnerability info path used for path inference
+  # This path is used when vulnerability_info is not explicitly set
+  # Default: "datasets/input.json"
+  vulnerability_info_relative_path: "datasets/input.json"
+
+# --------------------------------------------------
+# Output configuration
+# --------------------------------------------------
+output:
+  # Base directory for generated artifacts
+  # Each run creates a turn_{index} subdirectory automatically
+  # Layout: turn_n/extracted/, turn_n/exp_json/, turn_n/vec_DB/
+  base_dir: "./src/artifact/"
+
+# --------------------------------------------------
+# LLM configuration
+# --------------------------------------------------
+llm:
+  # LLM configuration file path
+  config_path: "/home/haichuan/projects/vulagent-main/expbank/src/config/model/exp_extraction_no_example.yaml"
+  
+  # Template name to use
+  template_name: "markdown_sytle"
+  
+  # Client type: "openai" or "litellm"
+  # litellm supports more providers and may perform better under concurrency
+  client_type: "litellm"
+
+# --------------------------------------------------
+# RAG vector database configuration
+# --------------------------------------------------
+rag:
+  # BGE embedding model path
+  model_path: "./models/bge-large-en-v1.5"
+  
+  # Vector database path (optional)
+  # If set, this path is used directly and no per-turn vec_DB is created
+  db_path: 

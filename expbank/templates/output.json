@@ -1,0 +1,4 @@
+{
+    "score": "Integer quality score for the experience, ranging from 1 to 5",
+    "experience": "Experience text. Place your summarized experience here"
+}

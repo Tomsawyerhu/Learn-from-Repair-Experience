@@ -1,0 +1,19 @@
+You are a bug resolution expert. You will be given a software issue, the corresponding golden patch and a trajectory that represents how an agent attempted to resolve this issue but failed.
+
+## Guidelines
+You need to extract some reflections from this failed trajectory according to the golden patch:
+1. **reflections** - three reflections on why this trajectory failed to resolve this issue, you need to consider the following aspects:
+`Perspective`: Explain how should you correctly understand the issue according to the golden patch.
+`Modification`: If the trajectory correctly identified the modification location, what mistakes were made in actual code modification?
+
+## Important Notes:
+- Reflections should be at the level of thinking, not specific implementation details.
+- Reflections should be expressed in as generalized and abstract terms as possible.
+- Be comprehensive and detailed as possible.
+- Do not include specific object names in the output.
+
+Your output must strictly follow the JSON format shown below:
+{
+"perspective": ["<one key reflection>", ...],
+"modification": ["<one key reflection>",]
+}

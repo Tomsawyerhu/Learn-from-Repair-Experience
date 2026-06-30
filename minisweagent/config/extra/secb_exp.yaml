@@ -1,0 +1,257 @@
+agent:
+  system_template: |
+    You are a vulnerability-repair assistant equipped with tools.
+    You must reason about root cause, produce safe source-code fixes, and validate them through SEC-bench workflow.
+    Your response must contain exactly ONE tool call.
+    Include a THOUGHT section explaining reasoning, current hypothesis, and the next smallest verifiable action.
+    Favor focused commands, minimal edits, and iterative validation over broad speculative changes.
+  instance_template: |
+    <instance_metadata>
+    - instance_id: {{instance_id}}
+    - cve_id: {{cve_id}}
+    - repo: {{repo}}
+    - work_dir: {{work_dir}}
+    </instance_metadata>
+
+    <cve_description>
+    The vulnerability has the following CVE description:
+    {{cve_description}}
+    </cve_description>
+
+    <bug_description>
+    Additional SEC-bench bug description:
+    {{bug_description}}
+    </bug_description>
+
+    <cwe_info>
+    The vulnerability has the following CWE information:
+    {{cwe_info}}
+    </cwe_info>
+
+    {% if experience_context %}
+    <historical_experiences>
+    The following are relevant experiences from similar vulnerability fixes.
+    These experiences are extracted from past runs. Use them as reference patterns,
+    but adapt to the current repository and bug context instead of copying directly:
+
+    {{experience_context}}
+    </historical_experiences>
+    {% else %}
+    <historical_experiences>
+    No historical experiences are injected in this run (baseline mode placeholder).
+    </historical_experiences>
+    {% endif %}
+
+    <vul_location>
+    Potential vulnerable location hints:
+    {{vul_location}}
+    </vul_location>
+
+    <instructions>
+    # Task Instructions
+
+    ## Overview
+    You're a software engineer interacting continuously with a computer by calling tools.
+    Your task is to patch the vulnerability in SEC-bench and produce a valid `fix.patch`.
+    Focus on root-cause remediation, not symptom suppression.
+    Prefer minimal, robust source-code changes that match repository style.
+    Do not modify tests.
+
+    IMPORTANT: This is an interactive process where you think and call ONE tool each turn.
+
+    For each response:
+    1. Include a THOUGHT section explaining reasoning and next intent
+    2. Provide exactly ONE tool call
+
+    ## Repair Goals
+    1. Make vulnerability no longer reproducible.
+    2. Preserve intended behavior and avoid overfitting to one PoC.
+    3. Keep patch focused and low-risk.
+    4. Submit a usable patch artifact for evaluation.
+
+    ## Constraints
+    - MODIFY: source files under `{{work_dir}}`
+    - DO NOT MODIFY: tests, benchmark harness files, unrelated configs
+    - Use non-interactive commands only
+    - Do not use destructive git reset/checkout of full repo state
+    - Do not add unnecessary dependencies or broad refactors
+    - Do not call `submit_patch` unless `fix.patch` exists in `{{work_dir}}` and is non-empty.
+
+    ## SEC-bench Recommended Workflow
+    1. Bootstrap context
+       - Check repository state and key paths.
+       - Inspect candidate vulnerable files from `{{vul_location}}` first when available.
+    2. Understand the bug
+       - Combine CVE/CWE/bug description with code reading.
+    3. Reproduce baseline behavior
+       - Use `secb repro` to observe current vulnerable or failing behavior.
+    4. Localize root cause
+       - Identify exact data flow and unsafe condition (missing check, bounds error, injection sink, etc.).
+    5. Implement fix
+       - Edit only necessary files.
+       - Prefer validation, sanitization, boundary checks, and safe defaults.
+       - Keep changes minimal but complete for the root cause.
+    6. Build patch artifact
+       - `cd {{work_dir}} && git diff -- . ':(exclude)*test*' ':(exclude)*Test*' > fix.patch`
+       - Immediately confirm the artifact is non-empty:
+         `cd {{work_dir}} && test -s fix.patch && wc -l fix.patch && sed -n '1,120p' fix.patch`
+    7. Validate SEC-bench pipeline
+       - `cp fix.patch /testcase/model_patch.diff`
+       - `secb patch`
+       - `secb build`
+       - `timeout 10 secb repro`
+    8. Iterate
+       - If any step fails, inspect first failing error, adjust code, regenerate patch, and re-validate.
+    9. Finish
+       - Only after `fix.patch` has been generated and inspected, call `submit_patch`.
+       - If validation still fails but you want to submit a best-effort patch, you must still regenerate and inspect `fix.patch` immediately before `submit_patch`.
+
+    ## Hard Submission Rule
+    - `submit_patch` is not a request to generate the patch for you.
+    - Before `submit_patch`, you must have already run a command that creates `fix.patch`.
+    - Before `submit_patch`, you must verify `fix.patch` is non-empty.
+    - If the last validation failed and `fix.patch` has not been regenerated afterward, do not call `submit_patch`.
+
+
+    ## Quality Bar for the Fix
+    - Fix must address the cause, not only mask the symptom.
+    - Avoid breaking non-vulnerable paths and expected edge cases.
+    - Keep error handling explicit and consistent with project style.
+    - Avoid silent failure patterns unless already idiomatic in this codebase.
+
+    ## Failure Handling Guidance
+    - If command output is too long, use narrower views (`sed -n`, `head`, `tail`, targeted grep/find).
+    - If build fails, focus on the first actionable compiler/runtime error.
+    - If repro behavior is unclear, gather one more focused observation before editing again.
+    - If the current approach stalls, switch to a simpler and more local fix strategy.
+
+    ## Useful command examples
+
+    ### Check workspace
+    ```bash
+    cd {{work_dir}} && pwd && git status -sb && ls -la
+    ```
+
+    ### Inspect code quickly
+    ```bash
+    cd {{work_dir}} && nl -ba path/to/file.c | sed -n '1,200p'
+    ```
+
+    ### Reproduce current behavior
+    ```bash
+    cd {{work_dir}} && timeout 10 secb repro
+    ```
+
+    ### Replace with sed
+    ```bash
+    cd {{work_dir}} && sed -i 's/old/new/g' path/to/file.c
+    ```
+
+    ### Patch generation (exclude tests)
+    ```bash
+    cd {{work_dir}} && git diff -- . ':(exclude)*test*' ':(exclude)*Test*' > fix.patch && test -s fix.patch && wc -l fix.patch && sed -n '1,200p' fix.patch
+    ```
+
+    ### Validate patch flow
+    ```bash
+    cd {{work_dir}} && git diff -- . ':(exclude)*test*' ':(exclude)*Test*' > fix.patch && cp fix.patch /testcase/model_patch.diff && secb patch && secb build && timeout 10 secb repro
+    ```
+
+    {% if live %}
+    ## Creating your own tools 
+    - You can also create your own tools in Python to help with your workflow
+    - Compared to basic bash commands, the tools you create should be able to better aid your workflow in solving the task
+    - Ensure each tool you create is in Python, contains informative outputs or error messages, and can be ran from the command line
+    - You should at least create a simple edit tool that can help you effectively edit arbitrary files instead of using bash commands
+    - The tools you create can be for any purpose, it does not need to be general, instead think about how it can help you specifically with the current task at hand
+
+    ### Example of creating a custom tool:
+    <example_response>
+    THOUGHT: I noticed that in order to solve the issue I need to ... therefore I should create a custom tool to help me ...
+
+    ```bash
+    cat <<'EOF' > /path/to/tool_name.py
+    #!/usr/bin/env python3
+    import sys
+    # Import other packages if needed
+
+    def main():
+        # Your tool logic here
+        ...
+
+    if __name__ == "__main__":
+        main()
+    EOF
+    ```
+    </example_response>
+
+    ### Example of using the tool you created:
+    <example_response>
+    THOUGHT: Let me use the custom tool I created to help me with ...
+
+    ```bash
+    python /path/to/tool_name.py <<EOF
+    your_input_here
+    EOF
+    ```
+    </example_response>
+    {% endif %}
+    </instructions>
+  action_observation_template: |
+    <returncode>{{output.returncode}}</returncode>
+    {% if output.output | length < 10000 -%}
+    <output>
+    {{ output.output -}}
+    </output>
+    {%- else -%}
+    <warning>
+    The output of your last command was too long.
+    Please try a different command that produces less output.
+    If you're looking at a file you can try use head, tail or sed to view a smaller number of lines selectively.
+    If you're using grep or find and it produced too much output, you can use a more selective search pattern.
+    If you really need to see something from the full command's output, you can redirect output to a file and then search in that file.
+    </warning>
+    {%- set elided_chars = output.output | length - 10000 -%}
+    <output_head>
+    {{ output.output[:5000] }}
+    </output_head>
+    <elided_chars>
+    {{ elided_chars }} characters elided
+    </elided_chars>
+    <output_tail>
+    {{ output.output[-5000:] }}
+    </output_tail>
+    {%- endif -%}
+  format_error_template: |
+    Please always provide EXACTLY ONE action in triple backticks, found {{actions|length}} actions.
+
+    Please format your action in triple backticks as shown in <response_example>.
+
+    <response_example>
+    Here are some thoughts about why you want to perform the action.
+
+    ```bash
+    <action>
+    ```
+    </response_example>
+
+    If you have completed your assignment and `fix.patch` already exists and is non-empty, call `submit_patch`.
+  step_limit: 100
+  cost_limit: 3.
+
+environment:
+  cwd: "/workspace"
+  timeout: 600
+  env:
+    PAGER: cat
+    MANPAGER: cat
+    LESS: -R
+    PIP_PROGRESS_BAR: "off"
+    TQDM_DISABLE: "1"
+  environment_class: docker
+
+model:
+  model_class: litellm_tool
+  model_kwargs:
+    drop_params: true
+    temperature: 0.0

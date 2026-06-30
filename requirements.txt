@@ -1,0 +1,57 @@
+# Unified EvoRepair dependency set.
+# Prefer `pip install -e .[dev,full]` when working from source.
+
+# Core runtime
+aiofiles
+aiohttp>=3.9.0
+beautifulsoup4
+chromadb
+datasets>=2.14.0
+docker>=7.1.0
+GitPython
+jinja2
+jsonlines
+litellm>=1.75.5
+loguru
+numpy>=2.3.0
+nvdlib
+openai!=1.100.0,!=1.100.1
+pandas>=2.0.0
+platformdirs
+prompt_toolkit
+pydantic>=2.5.0
+PyGithub
+python-dotenv
+pyyaml
+requests>=2.31.0
+rich>=13.0.0
+selenium
+sentence-transformers
+smolagents @ git+https://github.com/SEC-bench/smolagents.git@main
+tabulate>=0.9.0
+tenacity
+textual
+typer
+
+# Optional runtime helpers
+modelscope
+swe-rex>=1.4.0
+
+# Development, testing, and docs
+build
+mike
+mkdocs-glightbox
+mkdocs-include-markdown-plugin
+mkdocs-material
+mkdocs-redirects
+mkdocstrings[python]>=0.18
+poetry>=2.1.0
+portkey-ai
+pre-commit
+pytest
+pytest-asyncio
+pytest-cov
+pytest-xdist
+ruff
+setuptools>=68
+wheel

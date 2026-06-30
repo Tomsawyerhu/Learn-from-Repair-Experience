@@ -1,0 +1,32 @@
+# ==================================================
+# ExpBank SEC-bench Pipeline Config
+# ==================================================
+
+input:
+  # Input directory that contains raw_traj/ and evaluation/
+  raw_traj_dir: "./raw_traj"
+
+  # Optional explicit paths
+  summary_path: null
+
+  # SEC metadata dataset (JSONL)
+  vulnerability_info: "minisweagent/data/secb_official_cve201_dataset.jsonl"
+  vulnerability_info_relative_path: "minisweagent/data/secb_official_cve201_dataset.jsonl"
+
+  # SEC raw_traj subdirectories are instance IDs, not CVE-*.
+  prefix: ""
+
+  # Preferred report file under evaluation/: report_{mode}.jsonl
+  evaluation_report_mode: "medium"
+
+output:
+  base_dir: "./src/artifact_sec/"
+
+llm:
+  config_path: "src/config/model/experience_extraction_config.yaml"
+  template_name: "markdown_sytle"
+  client_type: "litellm"
+
+rag:
+  model_path: "./models/bge-large-en-v1.5"
+  db_path:

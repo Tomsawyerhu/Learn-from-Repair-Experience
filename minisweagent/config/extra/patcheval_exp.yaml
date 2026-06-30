@@ -1,0 +1,198 @@
+agent:
+  system_template: |
+    You are a helpful assistant that is equipped with tools to solve programming tasks.
+    Your response must contain exactly ONE tool call.
+    Include a THOUGHT section in your response where you explain your reasoning process.
+  instance_template: |
+    <cve_description>
+    The vulnerability has the following CVE description:
+    {{cve_description}}
+    </cve_description>
+
+    <cwe_info>
+    The vulnerability has the following CWE information:
+    {{cwe_info}}
+    </cwe_info>
+
+    {% if experience_context %}
+    <historical_experiences>
+    The following are relevant experiences from similar vulnerability fixes .
+    These experiences are extracted from successful past fixes. Use them as reference to understand common patterns,
+    but adapt the solutions to the current context rather than copying them directly:
+    
+    {{experience_context}}
+    </historical_experiences>
+    {% endif %}
+
+    <vul_location>
+    The vulnerability is located in the following code lines, do not modify other code lines:
+    {{vul_location}}
+    </vul_location>
+
+    <instructions>
+    # Task Instructions
+
+    ## Overview
+    You're a software engineer interacting continuously with a computer by calling tools.
+    You'll be helping implement necessary changes to fix the vulnerability.
+    Your task is specifically to make changes to non-test files in the current directory 
+    in order to fix the vulnerability described above in a way that is general and consistent with the codebase.
+    To enhance your vulnerability remediation capabilities and experience, you should maintain a dedicated documentation 
+    for each vulnerability. This documentation should record details such as the vulnerability description, 
+    root cause analysis, remediation process, and outcomes. You can refer to previously documented records 
+    during the remediation process and continuously update and refine them for future reference.
+
+    IMPORTANT: This is an interactive process where you will think and call ONE tool, see its result, then think and call your next tool.
+
+    For each response:
+    1. Include a THOUGHT section explaining your reasoning and what you're trying to accomplish
+    2. Provide exactly ONE tool to call
+
+    ## Important Boundaries
+    - MODIFY: Regular source code files
+    - DO NOT MODIFY: Tests, configuration files (pyproject.toml, setup.cfg, etc.)
+
+    ## Available Scripts
+    The following four scripts are available to help you fix and verify the vulnerability:
+    bash fix-run.sh: Run fix-run.sh to execute the PoC and verify that the patched vulnerability is no longer exploitable.
+                    To run fix-run.sh, you must first generate fix.patch in the same directory.
+    bash vul-run.sh: Run vul-run.sh to execute the PoC and verify that the original (unpatched) vulnerability is exploitable.
+    bash unit_test.sh: (if present) Run unit_test.sh to execute unit tests and validate functional correctness.
+    bash prepare.sh: Resets all changes in the repository. Run this script before each evaluation.
+
+    ## Recommended Workflow
+    1. Understand the vulnerability from the CVE description and CWE information
+    2. Check the latest documentation of the vulnerability if available
+    3. Verify the existence of the vulnerability by running vul-run.sh
+    4. Locate vulnerability in the source code if needed
+    5. Edit source code to fix the vulnerability
+    6. Use git diff to review your changes, generate fix.patch, and use cat to view its content
+    7. Verify fix.patch by running prepare.sh and fix-run.sh, if test error occurs, you can check test.patch for reference
+    8. If fix.patch passes verification, update documentation, submit fix.patch and finish workflow
+
+    Each response should include:
+    1. A **THOUGHT** section where you explain your reasoning and plan
+    2. A single tool call
+
+    **CRITICAL REQUIREMENTS:**
+    - Your response SHOULD include a THOUGHT section explaining your reasoning
+    - Your response MUST include EXACTLY ONE tool call
+
+    ## Environment Details
+    - You have a full Linux shell environment
+    - Always use non-interactive flags (-y, -f) for commands
+    - Avoid interactive commands like vi, nano, or any that require user input
+    - If a command isn't available, you can install it
+    - Source code dir is {{source_dir}}, it is a git repository; you can use git commands to inspect changes
+    - The test.patch file documents the new tests that should pass after the vulnerability is fixed.
+
+    ## Useful Command Examples
+    When you call bash tool, you can consider the following commands
+
+    ### Create a new file:
+    ```bash
+    cat <<'EOF' > newfile.py
+    import numpy as np
+    hello = "world"
+    print(hello)
+    EOF
+    ```
+
+    ### Edit files with sed:
+    ```bash
+    # Replace all occurrences
+    sed -i 's/old_string/new_string/g' filename.py
+
+    # Replace only first occurrence
+    sed -i 's/old_string/new_string/' filename.py
+
+    # Replace first occurrence on line 1
+    sed -i '1s/old_string/new_string/' filename.py
+
+    # Replace all occurrences in lines 1-10
+    sed -i '1,10s/old_string/new_string/g' filename.py
+    ```
+
+    ### View file content:
+    ```bash
+    # View specific lines with numbers
+    nl -ba filename.py | sed -n '10,20p'
+    ```
+
+    ### Generate diff of changes:
+    ```bash
+    cd {{source_dir}} && git diff -- . ':(exclude)*test*' ':(exclude)*Test*' > ../fix.patch
+    ```
+
+    ### Validate the patch:
+    ```bash
+    # prepare.sh is used to reset all changes, run it before validation
+    # please do not run unit tests for verification by yourself. Use fix-run.sh instead, because test.patch has not been included.
+    bash prepare.sh && bash fix-run.sh
+
+    ### Any other command you want to run
+    ```bash
+    anything
+    ```
+
+    </instructions>
+  action_observation_template: |
+    <returncode>{{output.returncode}}</returncode>
+    {% if output.output | length < 10000 -%}
+    <output>
+    {{ output.output -}}
+    </output>
+    {%- else -%}
+    <warning>
+    The output of your last command was too long.
+    Please try a different command that produces less output.
+    If you're looking at a file you can try use head, tail or sed to view a smaller number of lines selectively.
+    If you're using grep or find and it produced too much output, you can use a more selective search pattern.
+    If you really need to see something from the full command's output, you can redirect output to a file and then search in that file.
+    </warning>
+    {%- set elided_chars = output.output | length - 10000 -%}
+    <output_head>
+    {{ output.output[:5000] }}
+    </output_head>
+    <elided_chars>
+    {{ elided_chars }} characters elided
+    </elided_chars>
+    <output_tail>
+    {{ output.output[-5000:] }}
+    </output_tail>
+    {%- endif -%}
+  format_error_template: |
+    Please always provide EXACTLY ONE action in triple backticks, found {{actions|length}} actions.
+
+    Please format your action in triple backticks as shown in <response_example>.
+
+    <response_example>
+    Here are some thoughts about why you want to perform the action.
+
+    ```bash
+    <action>
+    ```
+    </response_example>
+
+    If you have completed your assignment, please consult the first message about how to
+    submit your solution (you will not be able to continue working on this task after that).
+  step_limit: 100
+  cost_limit: 3.
+
+environment:
+  cwd: "/workspace"
+  timeout: 600
+  env:
+    PAGER: cat
+    MANPAGER: cat
+    LESS: -R
+    PIP_PROGRESS_BAR: 'off'
+    TQDM_DISABLE: '1'
+  environment_class: docker
+
+model:
+  model_kwargs:
+    drop_params: true
+    temperature: 0.0
+
+

@@ -1,0 +1,17 @@
+diff --git a/src/hash.c b/src/hash.c
+index fc6b6fa6b..a8b0c3fd1 100644
+--- a/src/hash.c
++++ b/src/hash.c
+@@ -1151,7 +1151,9 @@ static mrb_value mrb_hash_default(mrb_state *mrb, mrb_value hash);
+ static void
+ hash_modify(mrb_state *mrb, mrb_value hash)
+ {
+-  mrb_check_frozen(mrb, mrb_hash_ptr(hash));
++  if (!mrb_nil_p(hash) && mrb_hash_p(hash)) {
++    mrb_check_frozen(mrb, mrb_hash_ptr(hash));
++  }
+ }
+ 
+ static mrb_value
+
+

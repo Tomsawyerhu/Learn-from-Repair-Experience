@@ -1,0 +1,88 @@
+{
+  "initial_output_file_count": 3966,
+  "post_dedup_output_file_count": 3956,
+  "dropped_duplicate_file_count": 10,
+  "duplicate_cve_group_count": 9,
+  "modified_count": 3956,
+  "cwe_dictionary_size": 944,
+  "unknown_cwe_count": 0,
+  "unknown_cwe_ids": [],
+  "missing_cve_description_count": 0,
+  "missing_cve_description_files": [],
+  "invalid_files_count": 0,
+  "invalid_files": [],
+  "post_dedup_duplicate_cve_count": 0,
+  "post_dedup_duplicate_cve_examples": {},
+  "removed_records": [
+    {
+      "cve_id": "CVE-2019-16792",
+      "kept_file": "GHSA-4ppp-gpcr-7qf6.json",
+      "removed_file": "GHSA-j7j6-7hfx-5522.json",
+      "kept_details_len": 1629,
+      "removed_details_len": 695
+    },
+    {
+      "cve_id": "CVE-2020-29128",
+      "kept_file": "GHSA-f5gc-p5m3-v347.json",
+      "removed_file": "GHSA-69q2-p9xp-739v.json",
+      "kept_details_len": 1641,
+      "removed_details_len": 280
+    },
+    {
+      "cve_id": "CVE-2021-32670",
+      "kept_file": "GHSA-xw7c-jx9m-xh5g.json",
+      "removed_file": "GHSA-gff3-739c-gxfq.json",
+      "kept_details_len": 1206,
+      "removed_details_len": 988
+    },
+    {
+      "cve_id": "CVE-2021-42343",
+      "kept_file": "GHSA-hwqr-f3v9-hwxr.json",
+      "removed_file": "GHSA-j8fq-86c5-5v2r.json",
+      "kept_details_len": 892,
+      "removed_details_len": 742
+    },
+    {
+      "cve_id": "CVE-2021-46823",
+      "kept_file": "GHSA-r8wq-qrxc-hmcm.json",
+      "removed_file": "GHSA-qfr5-wjpw-q4c4.json",
+      "kept_details_len": 901,
+      "removed_details_len": 347
+    },
+    {
+      "cve_id": "CVE-2024-1728",
+      "kept_file": "GHSA-3f95-mxq2-2f63.json",
+      "removed_file": "GHSA-m842-4qm8-7gpq.json",
+      "kept_details_len": 735,
+      "removed_details_len": 669
+    },
+    {
+      "cve_id": "CVE-2024-24762",
+      "kept_file": "GHSA-qf9m-vfgh-m389.json",
+      "removed_file": "GHSA-93gm-qmq6-w238.json",
+      "kept_details_len": 6260,
+      "removed_details_len": 6165
+    },
+    {
+      "cve_id": "CVE-2024-24762",
+      "kept_file": "GHSA-qf9m-vfgh-m389.json",
+      "removed_file": "GHSA-2jv5-9r88-3w3p.json",
+      "kept_details_len": 6260,
+      "removed_details_len": 4963
+    },
+    {
+      "cve_id": "CVE-2024-38519",
+      "kept_file": "GHSA-79w7-vh3h-8g4j.json",
+      "removed_file": "GHSA-22fp-mf44-f2mq.json",
+      "kept_details_len": 2859,
+      "removed_details_len": 2192
+    },
+    {
+      "cve_id": "CVE-2026-1669",
+      "kept_file": "GHSA-3m4q-jmj6-r34q.json",
+      "removed_file": "GHSA-gfmx-qqqh-f38q.json",
+      "kept_details_len": 9624,
+      "removed_details_len": 478
+    }
+  ]
+}

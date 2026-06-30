@@ -1,0 +1,13 @@
+python ./minisweagent/run/extra/patcheval_exp.py \
+-d /home/haichuan/projects/vulagent-main/minisweagent/data/patcheval_dataset.jsonl \
+-o /home/haichuan/projects/vulagent-main/minisweagent/output/xgq-test-230-0  \
+--model hosted_vllm/Devstral-2-123B-Instruct-2512 \
+--model-class litellm_tool \
+--mode baseline \
+--exp-db /home/haichuan/projects/vulagent-main/expbank/src/vec_DB \
+--exp-model /home/haichuan/projects/vulagent-main/expbank/models/bge-large-en-v1.5 \
+--auto-eval \
+--exclude-current-cve \
+--temporal-filter \
+--workers 16 \
+--max-instances 32

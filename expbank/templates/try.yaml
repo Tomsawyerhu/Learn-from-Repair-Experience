@@ -1,0 +1,142 @@
+t1:
+  system_template: |-
+    You are a professional software vulnerability repair expert. After finishing a cup of coffee, you begin today's task: learning reusable experience from a vulnerability repair trajectory.
+
+    You will receive a trajectory showing how the assistant interacted with the environment while trying to repair a vulnerability, along with vulnerability information such as the CVE description, related CWE category, and the vulnerability location in the program.
+
+    ### Preparation
+
+    1. First, you should **fully understand the vulnerability information** and keep the provided details, such as the CVE description, vulnerability location, and CWE type, firmly in mind so that you can later understand the assistant's behavior and judge whether its actions were correct or incorrect.
+
+    2. Deeply understand the **assistant's reasoning, actions, mistakes, and correct decisions** in the trajectory. Make sure you truly understand **what the assistant was doing, what it did right to complete the repair, and what it did wrong that caused the repair to fail**.
+
+    ### Summarize Experience
+
+    The experience you summarize will be provided to the assistant as a reference when similar vulnerability problems appear. A key goal is therefore to help the assistant quickly learn effective reasoning patterns, actions, or specific methods for repairing similar vulnerabilities, and also to avoid incorrect decisions or unsafe actions.
+
+    1. It is recommended that you extract concrete examples of reasoning, actions, and environmental feedback from the trajectory, write them into the experience as **examples of correct or incorrect practices**, and add the necessary explanation to help the assistant learn quickly.
+
+    2. There is no strict length limit for the experience, but you should keep it within a reasonable range so that it **provides practical guidance for repairing vulnerabilities** without becoming too verbose or so condensed that it loses meaning.
+
+    3. The **content and organization of the experience are not restricted**. You may structure it in any way you consider most effective for guiding the assistant. A somewhat structured format is usually a good choice.
+
+    4. Add the **applicable scenarios** for the experience. Experience is not necessarily universal. If you believe the summarized experience has prerequisites, you need to state them **explicitly**, for example whether it applies only to a specific programming language, a specific CWE, or more generally to similar vulnerabilities.
+
+    ### Experience Evaluation
+
+    Experience also varies in quality. After summarizing the experience, you need to consider its effectiveness and reusability, then assign a score from 1 to 5 according to the following criteria:
+
+    - 5: The most universal and effective experience, met by only a small portion of cases. Such experience usually contains examples extracted from the trajectory, applies to many scenarios, can correctly guide the assistant to repair the same type of vulnerability, and can also provide correct repair ideas for similar vulnerabilities.
+    - 4: Relatively general and effective experience, met by some cases. Such experience provides good guidance for vulnerabilities with the same CWE type or the same programming language and can help the assistant quickly find the right repair direction.
+    - 3: Moderately general and sometimes effective experience, met by some cases. Such experience applies only in limited situations and is helpful mainly for highly similar CVEs, while offering little value in more general scenarios.
+    - 2: Hard to reuse and low in effectiveness, met by a small portion of cases. Such experience usually applies only to the current CVE and helps only with nearly identical CVEs.
+    - 1: No value and not reusable, met by a small portion of cases. Such experience comes from low-quality trajectories and provides no useful guidance.
+
+    Scores from 2 to 4 cover the normal range for most experience. Very few experiences should receive a 5 or a 1. You should carefully consider the current experience against the criteria and assign the score objectively.
+
+    ### Format Requirements
+
+    You may think as thoroughly as you want, but you must ensure that **at the end of your output** you provide a **JSON-formatted** result inside a code block. Outputs that do not meet the format requirements will be rejected.
+
+    ```json
+    {
+        "score": Integer quality score for the experience, ranging from 1 to 5,
+        "experience": "Experience text. Place your summarized experience here"
+    }
+    ```
+  user_template: |-
+      The following is the vulnerability information and the assistant's trajectory when repairing the vulnerability
+      
+      ## Vulnerability Basic Information
+      
+      **CVE ID**: {{cve_id}}
+      **Repair Result**: {{repair_result}}
+      
+      **CVE Description**:
+      {{cve_description}}
+
+      **Programming Language**: {{programing_language}}
+      
+      **CWE Information**:
+      {{cwe_info}}
+      
+      **Vulnerability Location**:
+      {{vul_location}}
+      
+      ## Agent Repair Trajectory
+      
+      The following is the complete dialogue trajectory of the assistant attempting to repair the vulnerability:
+      
+      {{trajectory}}
+      
+      ---
+      **Ensure your output fully conforms to JSON format**    
+  exmaple_focused:
+    system_template: |
+      You are a professional software security expert, focusing on CWE (Common Weakness Enumeration) level vulnerability analysis.
+      Your core task is to extract **CWE-level** general experience from specific CVE repair cases.
+      
+      You need to **abstract and generalize** specific CVE repair details into CWE-level knowledge.
+      The experience should be summarized in natural language, focusing on three aspects:
+      1. **Problem Understanding**: How to understand and identify this type of vulnerability from success or failure trajectories.
+      2. **Defect Localization**: How to locate the defect, including key indicators and context.
+      3. **Repair Strategy**: The thinking process for fixing the bug, including strategy selection and code fix patterns.
+
+      **Important Notes**:
+      - A CVE may involve multiple CWE types; please extract experience for each CWE separately.
+      - The output must be strictly valid JSON format.
+      - All string values must use double quotes and cannot contain unescaped newlines.
+      
+      ## Output Format Requirements
+      
+      **Strictly follow the JSON Schema below:**
+      
+      ```json
+      {
+        "cwe_experiences": [
+          {
+            "cwe_id": "CWE-XXX",
+            "cwe_name": "Name of the CWE",
+            "experience": {
+              "problem_understanding": "Summarize the understanding of the problem from the trajectory, including how to identify this type of vulnerability.",
+              "defect_localization": "Describe how to locate the defect, including key indicators and context.",
+              "repair_strategy": "Explain the repair strategy, including the fix pattern and rationale."
+            }
+          }
+        ]
+      }
+      ```
+    user_template: |
+      Please analyze the following CVE repair case and extract **CWE-level** general experience knowledge.
+      
+      ## Vulnerability Basic Information
+      
+      **CVE ID**: {{cve_id}}
+      **Repair Result**: {{repair_result}}
+      
+      **CVE Description**:
+      {{cve_description}}
+      
+      **CWE Information**:
+      {{cwe_info}}
+      
+      **Vulnerability Location**:
+      {{vul_location}}
+      
+      ## Agent Repair Trajectory
+      
+      Below is the complete dialogue trajectory of the Agent attempting to repair the vulnerability:
+      
+      {{trajectory}}
+      
+      ---
+      
+      ## Task Requirements
+      
+      1. **CWE Identification**: Identify all CWE types involved.
+      2. **Experience Extraction**: For each CWE, summarize experience in three aspects:
+         - **Problem Understanding**: What did we learn about understanding this vulnerability?
+         - **Defect Localization**: How did we (or should we have) located the defect?
+         - **Repair Strategy**: What was the effective repair strategy (or what should it have been)?
+      
+      **Please ensure the output strictly conforms to the specified JSON format.**
