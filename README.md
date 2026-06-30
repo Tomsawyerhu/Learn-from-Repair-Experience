@@ -1,9 +1,7 @@
-<p align="center">
-  <img src="assets/Logo.png" alt="EvoRepair" width="85%">
-</p>
 
 <p align="center">
-  A self-evolving agent framework for vulnerability repair.
+  Learning from Repair Experience: Self-Evolving
+Agents for Automated Vulnerability Repair
 </p>
 
 <p align="center">
@@ -36,7 +34,7 @@ The repository currently exposes three main execution paths:
 
 Core framework code lives under `minisweagent/`. Experience generation and retrieval components
 live under `expbank/`. In particular, the local changes in
-[`minisweagent/agents/enhanced.py`](/Users/a1021500054/projects/EvoRepair/minisweagent/agents/enhanced.py)
+[`minisweagent/agents/enhanced.py`](minisweagent/agents/enhanced.py)
 adapt Mini-SWE-Agent to support model-driven tool calling in the EvoRepair workflow.
 
 ## 🚀 Supported Workflows
@@ -52,8 +50,6 @@ adapt Mini-SWE-Agent to support model-driven tool calling in the EvoRepair workf
 Install the project in editable mode with development dependencies:
 
 ```bash
-git clone https://github.com/ballShell/EvoRepair.git
-cd EvoRepair
 pip install -e ".[dev,full]" --no-build-isolation
 ```
 

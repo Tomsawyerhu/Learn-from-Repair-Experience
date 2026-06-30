@@ -1,6 +1,6 @@
 {
-  "dataset": "/home/haichuan/projects/vulagent-main/minisweagent/data/secb_official_cve201_dataset.jsonl",
-  "out_dir": "/home/haichuan/projects/vulagent-main/minisweagent/data/secb_gold_patches",
+  "dataset": "minisweagent/data/secb_official_cve201_dataset.jsonl",
+  "out_dir": "minisweagent/data/secb_gold_patches",
   "count_total": 201,
   "count_success": 201,
   "count_failed": 0,

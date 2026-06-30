@@ -15,7 +15,7 @@ input:
   
   # CVE vulnerability info file (optional)
   # If omitted, default to datasets/input.json beside raw_traj_dir
-  vulnerability_info: "/home/haichuan/projects/vulagent-main/expbank/datasets/input.json"
+  vulnerability_info: "./expbank/datasets/input.json"
   
   # Relative vulnerability info path used for path inference
   # This path is used when vulnerability_info is not explicitly set
@@ -36,7 +36,7 @@ output:
 # --------------------------------------------------
 llm:
   # LLM configuration file path
-  config_path: "/home/haichuan/projects/vulagent-main/expbank/src/config/model/exp_extraction_no_example.yaml"
+  config_path: "./expbank/src/config/model/exp_extraction_no_example.yaml"
   
   # Template name to use
   template_name: "markdown_sytle"

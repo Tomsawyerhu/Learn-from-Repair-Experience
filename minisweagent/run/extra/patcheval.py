@@ -273,4 +273,4 @@ def main(
 if __name__ == "__main__":
     app()
 
-# python minisweagent/run/extra/patcheval.py -d /mnt/data/hhc/VulAgentEvolver/minisweagent/data/patcheval_dataset.jsonl -o /mnt/data/hhc/VulAgentEvolver/minisweagent/output_patcheval --model openai/gpt-5-mini  --model-class litellm_tool
+# python minisweagent/run/extra/patcheval.py -d minisweagent/data/patcheval_dataset.jsonl -o minisweagent/output_patcheval --model openai/gpt-5-mini --model-class litellm_tool

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Collect patch submissions from VulAgentEvolver/minisweagent/output_patcheval/ directories.
+Collect patch submissions from minisweagent output directories.
 
 This script reads JSON files from subdirectories starting with a given prefix,
 extracts the 'submission' field from the 'info' object, and writes a JSON array
@@ -11,8 +11,8 @@ Usage:
                               [--prefix PREFIX] [--output-file OUTPUT_FILE]
 
 Defaults:
-    input_dir:   /mnt/data/hhc/VulAgentEvolver/minisweagent/output_patcheval/
-    output_dir:  /mnt/data/hhc/PatchEval/patcheval/evaluation/
+    input_dir:   minisweagent/output_patcheval_exp/
+    output_dir:  PatchEval/patcheval/evaluation/
     prefix:      CVE
     output_file: collected_patches.json
 """
@@ -136,12 +136,12 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument(
         '--input-dir',
-        default='/mnt/data/hhc/VulAgentEvolver/minisweagent/output_patcheval_exp/',
+        default='minisweagent/output_patcheval_exp/',
         help='Directory containing CVE subdirectories (default: %(default)s)'
     )
     parser.add_argument(
         '--output-dir',
-        default='/mnt/data/hhc/PatchEval/patcheval/evaluation/',
+        default='PatchEval/patcheval/evaluation/',
         help='Directory to write output JSON file (default: %(default)s)'
     )
     parser.add_argument(

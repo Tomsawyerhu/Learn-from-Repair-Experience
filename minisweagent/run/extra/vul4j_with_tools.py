@@ -28,7 +28,7 @@ app = typer.Typer(rich_markup_mode="rich", add_completion=False)
 
 _OUTPUT_FILE_LOCK = threading.Lock()
 
-vul4j_root = '/root/autodl-tmp/vul_repo'
+vul4j_root = os.getenv("VUL4J_ROOT", "vul_repo")
 
 
 def vul_checkout(vul_id):
@@ -75,7 +75,7 @@ def vul_checkout(vul_id):
     path = f'{vul4j_root}/{vul_id}'
     if os.path.exists(path):
         subprocess.run(['rm', '-rf', path])
-    # $ vul4j checkout --id VUL4J-1 -d /root/autodl-tmp/vul4j/repos/VUL4J-1
+    # $ vul4j checkout --id VUL4J-1 -d vul_repo/VUL4J-1
     result = subprocess.run([
         'vul4j', 'checkout', '--id', vul_id, '-d', path
     ], capture_output=True,  # Capture stdout and stderr.
@@ -284,5 +284,5 @@ def main(
 if __name__ == "__main__":
     app()
 
-# python minisweagent/run/extra/vul4j_with_tools.py -d /root/autodl-tmp/MultiLocationFix/data/vul_location.json -o /root/autodl-tmp/mini-swe-agent-main/output_with_tools --model dashscope/qwen3-max-preview --model-class litellm
-# python minisweagent/run/extra/vul4j_with_tools.py -d /root/autodl-tmp/MultiLocationFix/data/vul_location.json -o /root/autodl-tmp/mini-swe-agent-main/output_with_tools --model dashscope/qwen3-coder-plus-2025-07-22 --model-class litellm
+# python minisweagent/run/extra/vul4j_with_tools.py -d data/vul_location.json -o output_with_tools --model dashscope/qwen3-max-preview --model-class litellm
+# python minisweagent/run/extra/vul4j_with_tools.py -d data/vul_location.json -o output_with_tools --model dashscope/qwen3-coder-plus-2025-07-22 --model-class litellm

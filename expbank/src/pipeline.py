@@ -72,7 +72,7 @@ class Pipeline:
 
     def __init__(
         self,
-        config_path: str = "/mnt/data/hhc/VulAgentEvolver/expbank/src/config/run/pipeline_config.yaml",
+        config_path: str = "src/config/run/pipeline_config.yaml",
         input_dir: Optional[str] = None,
         output_dir: Optional[str] = None,
         summary_path: Optional[str] = None,

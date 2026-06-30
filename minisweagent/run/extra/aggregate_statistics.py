@@ -1049,7 +1049,7 @@ def main():
         epilog="""
 Examples:
   python aggregate_statistics.py /path/to/metadata_exp
-  python aggregate_statistics.py f:\\software\\projects\\VulAgentEvolver\\metadata_exp
+  python aggregate_statistics.py ./metadata_exp
         """
     )
     parser.add_argument("root_dir", type=str, help="Root directory containing exp_turn_* subdirectories")

@@ -2,6 +2,8 @@
 __pycache__/
 *.py[codz]
 *$py.class
+.DS_Store
+.idea/
 
 # C extensions
 *.so
@@ -221,6 +223,8 @@ __marimo__/
 
 expbank/src/artifact/
 expbank/src/artifact_sec/
+expbank/770_vec_DB/
+SEC-bench/SEC-bench/output
 
 result/
 

@@ -25,7 +25,7 @@ from minisweagent.utils.log import add_file_handler
 from minisweagent.environments import get_environment
 
 # ========== ExpBank experience repository configuration ==========
-PROJECT_ROOT = Path(__file__).resolve().parents[3]  # vulagent-main/
+PROJECT_ROOT = Path(__file__).resolve().parents[3]
 EXPBANK_ROOT = PROJECT_ROOT / "expbank"
 
 
@@ -608,5 +608,5 @@ def _run_evaluation_only(
 if __name__ == "__main__":
     app()
 
-# python minisweagent/run/extra/vul4j.py -d /root/autodl-tmp/MultiLocationFix/data/vul_location.json -o /root/autodl-tmp/mini-swe-agent-main/output --model dashscope/qwen3-max-preview --model-class litellm
-# python minisweagent/run/extra/vul4j.py -d /root/autodl-tmp/MultiLocationFix/data/vul_location.json -o /root/autodl-tmp/mini-swe-agent-main/output --model dashscope/qwen3-coder-plus-2025-07-22 --model-class litellm
+# python minisweagent/run/extra/vul4j.py -d data/vul_location.json -o output --model dashscope/qwen3-max-preview --model-class litellm
+# python minisweagent/run/extra/vul4j.py -d data/vul_location.json -o output --model dashscope/qwen3-coder-plus-2025-07-22 --model-class litellm

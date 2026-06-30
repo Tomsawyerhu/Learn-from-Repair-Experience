@@ -24,7 +24,11 @@ def main(
     ),
 ) -> DefaultAgent:
     agent = DefaultAgent(
-        LitellmModel(model_name=model_name,base_url="https://dashscope.aliyuncs.com/compatible-mode/v1",api_key="sk-e346078d76f546c2ab04f0f008126a91"),
+        LitellmModel(
+            model_name=model_name,
+            base_url=os.getenv("MSWEA_MODEL_BASE_URL", ""),
+            api_key=os.getenv("MSWEA_MODEL_API_KEY", ""),
+        ),
         LocalEnvironment(),
         **yaml.safe_load(Path(package_dir / "config" / "default.yaml").read_text())["agent"],
     )

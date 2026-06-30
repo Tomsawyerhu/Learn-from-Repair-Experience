@@ -30,8 +30,8 @@ from minisweagent.utils.log import add_file_handler, logger
 from minisweagent.tools.base import ToolManager
 from minisweagent.tools.evolve_tools import EvolveToolsManager, EvolveToolsManagerConfig
 
-# Compute project root directory (VulAgentEvolver/)
-# Current file: VulAgentEvolver/minisweagent/run/extra/patcheval_exp.py
+# Compute project root directory.
+# Current file: minisweagent/run/extra/patcheval_exp.py
 # Project root: ../../../ (3 levels up)
 PROJECT_ROOT = Path(__file__).resolve().parents[3]
 EXPBANK_ROOT = PROJECT_ROOT / "expbank"

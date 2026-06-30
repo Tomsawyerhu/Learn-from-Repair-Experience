@@ -4,8 +4,8 @@ import matplotlib.pyplot as plt
 from collections import Counter, defaultdict
 
 def main():
-    # Setting paths based on the script location: f:\software\projects\VulAgentEvolver\expbank\src\script
-    # We want to access: f:\software\projects\VulAgentEvolver\expbank\src\exp_json
+    # Set paths based on the script location.
+    # We want to access expbank/src/exp_json.
     
     current_dir = os.path.dirname(os.path.abspath(__file__))
     src_dir = os.path.dirname(current_dir)

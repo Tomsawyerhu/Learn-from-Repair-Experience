@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-**mini-SWE-agent** (v1.16.0) is an autonomous agent framework for solving software engineering tasks. It's part of the broader **VulAgentEvolver** project that focuses on vulnerability remediation using AI agents.
+**mini-SWE-agent** (v1.16.0) is an autonomous agent framework for solving software engineering tasks. It is adapted here for vulnerability remediation using AI agents.
 
 The system uses a modular architecture with pluggable components:
 - **Agents**: Different autonomous agent implementations (default, interactive, textual UI)
