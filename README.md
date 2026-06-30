@@ -256,7 +256,3 @@ The EvoRepair workflow builds on or integrates with the following upstream repos
 3. [Vul4J](https://github.com/tuhh-softsec/vul4j): Java vulnerability repair benchmark and evaluation framework.
 4. [SEC-bench](https://github.com/SEC-bench/SEC-bench): security-oriented benchmark for evaluating LLM agents on vulnerability-related software tasks.
 5. [live-swe-agent](https://github.com/OpenAutoCoder/live-swe-agent): live and interactive SWE-agent style workflow for repository repair and tool-augmented agent execution.
-
-## For Reviewers
-1. See appendix in paper_with_appendix.pdf
-2. See data in trajectory_and_experience.zip, where all trajectories and experience produced in the experiments are provided
