@@ -1,6 +1,10 @@
 
-<p align="center">
+<h1 align="center">
   Learning from Repair Experience: Self-Evolving Agents for Automated Vulnerability Repair
+</h1>
+
+<p align="center">
+  <img src="assets/overview.png" alt="Overview" width="75%">
 </p>
 
 <p align="center">
@@ -19,9 +23,7 @@
 
 ## 👋 Overview
 
-<p align="center">
-  <img src="assets/overview.png" alt="Overview" width="75%">
-</p>
+
 
 EvoRepair is a self-evolving agent framework for vulnerability repair. The repository combines
 multi-turn repair orchestration, experience retrieval and indexing, and benchmark-specific runners
