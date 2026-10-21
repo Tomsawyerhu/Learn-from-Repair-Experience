@@ -1,10 +1,10 @@
 
 <p align="center">
-  Learning from Repair Experience: Self-Evolving
-Agents for Automated Vulnerability Repair
+  Learning from Repair Experience: Self-Evolving Agents for Automated Vulnerability Repair
 </p>
 
 <p align="center">
+  <a href="https://arxiv.org/abs/2605.30105">Paper</a> •
   <a href="#-overview">Overview</a> •
   <a href="#-set-up">Set Up</a> •
   <a href="#-usage">Usage</a> •
@@ -14,7 +14,8 @@ Agents for Automated Vulnerability Repair
 
 * * *
 
-see appendix at [appendix](./appendix.pdf)
+## 📰 News
+* **[Oct. 21, 2026]**: 🎉🎉🎉 EvoRepair has been accepted to ICSE 2026 (Top 5%, 119/2375).
 
 ## 👋 Overview
 
