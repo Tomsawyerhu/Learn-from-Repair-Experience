@@ -19,7 +19,7 @@
 * * *
 
 ## 📰 News
-* **[Oct. 21, 2026]**: 🎉🎉🎉 EvoRepair has been accepted to ICSE 2027 (Top 5%, 119/2375).
+* **[Oct. 21, 2026]**: 🎉🎉🎉 EvoRepair has been accepted to [ICSE 2027](https://conf.researchr.org/track/icse-2027) (Top 5%, 119/2375).
 
 ## 👋 Overview
 
